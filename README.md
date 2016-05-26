@@ -1,4 +1,2 @@
-# oembed-api
-Oembed API (Node.js)
-
-Replacement of the appserv-oembed project
+# movie-api
+movie API (Node.js)
