@@ -1,0 +1,80 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Oembed-API",
+    "contact": {
+      "name": "CPS Team"
+    }
+  },
+  "basePath": "/oembed",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/assets/{url}": {
+      "get": {
+        "tags": [
+          "Oembed"
+        ],
+        "summary": "retrieves oembed json for given url",
+        "parameters": [
+          {
+            "name": "url",
+            "description": "url of oembed asset requested",
+            "type": "string",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "oembed json response"
+          },
+          "500": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/service_status": {
+      "get": {
+        "tags": [
+          "Service Status"
+        ],
+        "summary": "Service status diagnostics page",
+        "responses": {
+          "200": {
+            "description": "status response"
+          },
+          "500": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

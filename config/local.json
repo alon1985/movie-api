@@ -1,0 +1,11 @@
+{
+  "logger": {
+    "name": "movie-api",
+    "streams": [
+      {
+        "level": "debug",
+        "stream": "stdout"
+      }
+    ]
+  }
+}
