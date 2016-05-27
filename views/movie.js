@@ -11,7 +11,7 @@ module.exports = (function (){
                 if (!req.params.movieId) {
                     return next(new restify.InvalidArgumentError('movie id required'));
                 }
-                movieUtils.getMovieById(1, function (err, results){
+                movieUtils.getMovieById(parseInt(req.params.movieId), function (err, results){
                     if(err){
                         logger.error('movie get');
                         res.send(500, {error: 'movie get'});
@@ -23,11 +23,15 @@ module.exports = (function (){
         },
         '/movies/search/': {
             'get': function movieSearch(req, res, next){
-                if (!req.params.movieId) {
-                    return next(new restify.InvalidArgumentError('movie id required'));
-                }
-                logger.error('movie get');
-                res.send(500, {error: 'movie get'});
+                var title = req.params.title || '';
+                var year = req.params.year || '';
+                var format = req.params.format || '';
+                movieUtils.movieSearch(title, format, year, function (err, results){
+                    if(err){
+                        logger.error('movie get');
+                        res.send(500, {error: 'movie get'});
+                    }
+                });
                 return next();
             }
         }
