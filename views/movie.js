@@ -6,6 +6,22 @@ module.exports = (function (){
     var movieUtils = require('../lib/movieUtils.js');
 
     return {
+        '/movies/search': {
+            'get': function movieSearch(req, res, next){
+                var title = req.params.title || '';
+                var year = req.params.year || '0';
+                var formatSeen = req.params.formatSeen || '';
+                movieUtils.searchForMovie(title, formatSeen, parseInt(year), function (err, results){
+                    if(err){
+                        logger.error('movie get');
+                        res.send(500, {error: err});
+                    } else {
+                        res.send(200, results);
+                    }
+                    return next();
+                });
+            }
+        },
         '/movies/:movieId': {
             'get': function getMovie(req, res, next) {
                 if (!req.params.movieId) {
@@ -14,25 +30,12 @@ module.exports = (function (){
                 movieUtils.getMovieById(parseInt(req.params.movieId), function (err, results){
                     if(err){
                         logger.error('movie get');
-                        res.send(500, {error: 'movie get'});
+                        res.send(500, {error: err});
+                    }else {
+                        res.send(200, results);
                     }
-                    res.send(200, results);
+                    return next();
                 });
-                return next();
-            }
-        },
-        '/movies/search/': {
-            'get': function movieSearch(req, res, next){
-                var title = req.params.title || '';
-                var year = req.params.year || '';
-                var format = req.params.format || '';
-                movieUtils.movieSearch(title, format, year, function (err, results){
-                    if(err){
-                        logger.error('movie get');
-                        res.send(500, {error: 'movie get'});
-                    }
-                });
-                return next();
             }
         }
     };
