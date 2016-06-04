@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = (function (){
-    var logger = require('../lib/logger.js');
     var restify = require('restify');
     var movieUtils = require('../lib/movieUtils.js');
 
@@ -13,7 +12,6 @@ module.exports = (function (){
                 var formatSeen = req.params.formatSeen || '';
                 movieUtils.searchForMovie(title, formatSeen, parseInt(year), function (err, results){
                     if(err){
-                        logger.error('movie get');
                         res.send(500, {error: err});
                     } else {
                         res.send(200, results);
@@ -29,7 +27,6 @@ module.exports = (function (){
                 }
                 movieUtils.getMovieById(parseInt(req.params.movieId), function (err, results){
                     if(err){
-                        logger.error('movie get');
                         res.send(500, {error: err});
                     }else {
                         res.send(200, results);

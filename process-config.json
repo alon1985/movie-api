@@ -1,11 +1,11 @@
 {
   "apps": [
     {
-      "name": "oembed-api",
+      "name": "movie-api",
       "script": "index.js",
       "log_date_format": "YYYY-MM-DD HH:mm Z",
-      "error_file": "/var/log/node/oembed-api-error.log",
-      "out_file": "/var/log/node/oembed-api.log",
+      "error_file": "/var/log/node/movie-api-error.log",
+      "out_file": "/var/log/node/movie-api.log",
       "exec_mode": "cluster"
     }
   ]

@@ -2,34 +2,34 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Oembed-API",
+    "title": "Movie-API",
     "contact": {
-      "name": "CPS Team"
+      "name": "Alon Motro"
     }
   },
-  "basePath": "/oembed",
+  "basePath": "/movies",
   "schemes": [
     "http"
   ],
   "paths": {
-    "/assets/{url}": {
+    "/{movieId}": {
       "get": {
         "tags": [
-          "Oembed"
+          "Movies"
         ],
-        "summary": "retrieves oembed json for given url",
+        "summary": "retrieves movie information by id",
         "parameters": [
           {
-            "name": "url",
-            "description": "url of oembed asset requested",
-            "type": "string",
+            "name": "movieId",
+            "description": "id of movie requested",
+            "type": "int",
             "required": true,
             "in": "path"
           }
         ],
         "responses": {
           "200": {
-            "description": "oembed json response"
+            "description": "movie data in json format"
           },
           "500": {
             "description": "unexpected error",
@@ -40,15 +40,38 @@
         }
       }
     },
-    "/service_status": {
+    "/search": {
       "get": {
         "tags": [
-          "Service Status"
+          "Movies"
         ],
-        "summary": "Service status diagnostics page",
+        "summary": "retrieves movie information by searching any combination of title, year, name",
+        "parameters": [
+          {
+            "name": "title",
+            "description": "title of movie (or any part of title)",
+            "type": "string",
+            "required": false,
+            "in": "query"
+          },
+          {
+            "name": "year",
+            "description": "year movie was seen",
+            "type": "string",
+            "required": false,
+            "in": "query"
+          },
+          {
+            "name": "format",
+            "description": "how the movie was seen",
+            "type": "string",
+            "required": false,
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "status response"
+            "description": "movie data in json format"
           },
           "500": {
             "description": "unexpected error",
