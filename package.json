@@ -1,6 +1,6 @@
 {
   "name": "movie-api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "movie API",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/alon85/AlonFilm",
   "dependencies": {
+    "@google/cloud-debug": "^0.8.2",
     "bunyan": "^1.8.1",
     "bunyan-config": "^0.2.0",
     "config": "^1.17.1",
@@ -39,5 +40,8 @@
     "merge": "^1.2.0",
     "mocha": ">= 2.3",
     "mockery": "^1.4.0"
+  },
+  "engines": {
+    "node": ">=5.0.0"
   }
 }
