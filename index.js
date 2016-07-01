@@ -1,6 +1,6 @@
 
 'use strict';
-require('@google/cloud-debug');
+//require('@google/cloud-debug');
 var fs = require('fs');
 var restify = require('restify');
 var logger = require('./lib/logger.js')
@@ -29,6 +29,9 @@ function createServer(logger) {
     server.use(restify.queryParser());
     server.use(restify.bodyParser());
     server.use(restify.requestLogger());
+    server.use(restify.CORS({
+        headers: ['Access-Control-Allow-Origin']                 // sets expose-headers
+    }));
 
 
     server.on('uncaughtException', function(req, res, route, error) {

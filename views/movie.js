@@ -34,6 +34,29 @@ module.exports = (function (){
                     return next();
                 });
             }
+        },
+        '/movies/add': {
+            'post': function getMovie(req, res, next) {
+                var title = req.params.title || '';
+                var year = req.params.year || '0';
+                var formatSeen = req.params.formatSeen || '';
+
+                movieUtils.addMovie(title, formatSeen, parseInt(year), function (err, results){
+                    if(err){
+                        res.send(500, {error: err});
+                    }else {
+                        if(results == 1)
+                        {
+                            var success = {
+                                status: 'Success',
+                                message: title + ' added to List'
+                            };
+                        }
+                        res.send(200,success);
+                    }
+                    return next();
+                });
+            }
         }
     };
 })();
