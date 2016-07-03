@@ -3,6 +3,7 @@
 module.exports = (function (){
     var restify = require('restify');
     var movieUtils = require('../lib/movieUtils.js');
+    var config = require('config');
 
     return {
         '/movies/search': {
@@ -40,22 +41,26 @@ module.exports = (function (){
                 var title = req.params.title || '';
                 var year = req.params.year || '0';
                 var formatSeen = req.params.formatSeen || '';
-
-                movieUtils.addMovie(title, formatSeen, parseInt(year), function (err, results){
-                    if(err){
-                        res.send(500, {error: err});
-                    }else {
-                        if(results == 1)
-                        {
-                            var success = {
-                                status: 'Success',
-                                message: title + ' added to List'
-                            };
+                var consumer = req.params.consumer;
+                if(consumer!==config.MYSQL_PASSWORD){
+                    res.send(500, {error: 'Bad Password'});
+                }
+                else {
+                    movieUtils.addMovie(title, formatSeen, parseInt(year), function(err, results) {
+                        if (err) {
+                            res.send(500, {error: err});
+                        } else {
+                            if (results == 1) {
+                                var success = {
+                                    status: 'Success',
+                                    message: title + ' added to List'
+                                };
+                            }
+                            res.send(200, success);
                         }
-                        res.send(200,success);
-                    }
-                    return next();
-                });
+                        return next();
+                    });
+                }
             }
         }
     };
