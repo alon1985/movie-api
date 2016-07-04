@@ -30,7 +30,8 @@ function createServer(logger) {
     server.use(restify.bodyParser());
     server.use(restify.requestLogger());
     server.use(restify.CORS({
-        headers: ['Access-Control-Allow-Origin']                 // sets expose-headers
+        headers: ['Access-Control-Allow-Origin'],
+        origins: ['*']
     }));
 
 
