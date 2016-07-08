@@ -40,7 +40,7 @@ module.exports = (function (){
             'post': function getMovie(req, res, next) {
                 var title = req.params.title || '';
                 var year = req.params.year || '0';
-                var formatSeen = req.params.formatSeen || '';
+                var formatSeen = req.params.format || '';
                 var consumer = req.params.consumer;
                 if(consumer!==config.MYSQL_PASSWORD){
                     res.send(500, {error: 'Bad Password'});

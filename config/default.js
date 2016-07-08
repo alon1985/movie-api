@@ -12,6 +12,6 @@ module.exports = {
     GCLOUD_PROJECT: 'alon-film-id',
     DATA_BACKEND: 'cloudsql',
     MYSQL_USER: 'root',
-    MYSQL_PASSWORD: '*******',
+    MYSQL_PASSWORD: '******',
     MYSQL_HOST: 'movie-db.alonfilm.jamotro.com'
 };
