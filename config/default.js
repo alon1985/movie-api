@@ -13,5 +13,5 @@ module.exports = {
     DATA_BACKEND: 'cloudsql',
     MYSQL_USER: 'root',
     MYSQL_PASSWORD: '******',
-    MYSQL_HOST: 'movie-db.alonfilm.jamotro.com'
+    MYSQL_HOST: '104.196.147.188'
 };
