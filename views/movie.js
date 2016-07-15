@@ -62,6 +62,19 @@ module.exports = (function (){
                     });
                 }
             }
+        },
+        '/movies/stats': {
+            'get': function getMovieStats(req, res, next) {
+                movieUtils.getMovieStats(function (err, results){
+                   if(err){
+                       res.send(500, {error: err});
+                   }
+                    else{
+                       res.send(200, results);
+                   }
+                    return next();
+                });
+            }
         }
     };
 })();
