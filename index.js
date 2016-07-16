@@ -1,6 +1,6 @@
 
 'use strict';
-require('@google/cloud-debug');
+//require('@google/cloud-debug');
 var fs = require('fs');
 var restify = require('restify');
 var logger = require('./lib/logger.js')
