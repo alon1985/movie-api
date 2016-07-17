@@ -21,21 +21,6 @@ module.exports = (function (){
                 });
             }
         },
-        '/movies/:movieId': {
-            'get': function getMovie(req, res, next) {
-                if (!req.params.movieId) {
-                    return next(new restify.InvalidArgumentError('movie id required'));
-                }
-                movieUtils.getMovieById(parseInt(req.params.movieId), function (err, results){
-                    if(err){
-                        res.send(500, {error: err});
-                    }else {
-                        res.send(200, results);
-                    }
-                    return next();
-                });
-            }
-        },
         '/movies/add': {
             'post': function getMovie(req, res, next) {
                 var title = req.params.title || '';
@@ -64,10 +49,10 @@ module.exports = (function (){
             }
         },
         '/movies/stats': {
-            'get': function getMovieStats(req, res, next) {
+            'get': function getStats(req, res, next) {
                 movieUtils.getMovieStats(function (err, results){
                    if(err){
-                       res.send(500, {error: err});
+                       res.send(500, {error: 'HERE' + err});
                    }
                     else{
                        res.send(200, results);
