@@ -6,6 +6,19 @@ module.exports = (function (){
     var config = require('config');
 
     return {
+        '/movies/upload': {
+          'get': function uploadMovieList(req, res, next){
+              var authToken = req.params.key;
+              movieUtils.uploadMovies(authToken, function (err, results){
+                 if(err){
+                     res.send(500, {error: err});
+                 } else {
+                     res.send(200, {status: 'success'});
+                 }
+                 return next();
+              });
+          }
+        },
         '/movies/search': {
             'get': function movieSearch(req, res, next){
                 var title = req.params.title || '';
