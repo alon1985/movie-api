@@ -10,8 +10,9 @@ module.exports = (function (){
             'get': function movieSearch(req, res, next){
                 var title = req.params.title || '';
                 var year = req.params.year || '0';
+                var style = req.params.style || 'default';
                 var formatSeen = req.params.formatSeen || '';
-                movieUtils.searchForMovie(title, formatSeen, parseInt(year), function (err, results){
+                movieUtils.searchForMovie(title, formatSeen, parseInt(year), style, function (err, results){
                     if(err){
                         res.send(500, {error: err});
                     } else {
