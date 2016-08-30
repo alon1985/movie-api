@@ -111,6 +111,14 @@ function createServer(logger) {
         return staticDocServer(req, res, next);
     });
 
+
+    server.use(function requireUserParam(req, res, next) {
+        if (req.url.indexOf('help') > -1 || req.url.indexOf('api-docs') > -1)  return next(); /* don't require consumer params for swagger!*/
+        if (!req.params.uid) return next(new restify.InvalidArgumentError('UserId not passed in'));
+        return next();
+    });
+
+
     fs.readdirSync('./views').forEach(function loadView(viewFile) {
         logger.info('Loading route: ' + viewFile);
         bindRoutes(require('./views/' + viewFile), server);

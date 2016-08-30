@@ -25,7 +25,8 @@ module.exports = (function (){
                 var year = req.params.year || '0';
                 var style = req.params.style || 'default';
                 var formatSeen = req.params.formatSeen || '';
-                movieUtils.searchForMovie(title, formatSeen, parseInt(year), style, function (err, results){
+                var userId = req.params.uid;
+                movieUtils.searchForMovie(title, formatSeen, parseInt(year), style, userId, function (err, results){
                     if(err){
                         res.send(500, {error: err});
                     } else {
@@ -40,12 +41,13 @@ module.exports = (function (){
                 var title = req.params.title || '';
                 var year = req.params.year || '0';
                 var formatSeen = req.params.format || '';
+                var userId = req.params.uid;
                 var consumer = req.params.consumer;
                 if(consumer!==config.MYSQL_PASSWORD){
                     res.send(500, {error: 'Bad Password'});
                 }
                 else {
-                    movieUtils.addMovie(title, formatSeen, parseInt(year), function(err, results) {
+                    movieUtils.addMovie(title, formatSeen, parseInt(year), userId, function(err, results) {
                         if (err) {
                             res.send(500, {error: err});
                         } else {
@@ -64,7 +66,8 @@ module.exports = (function (){
         },
         '/movies/stats': {
             'get': function getStats(req, res, next) {
-                movieUtils.getMovieStats(function (err, results){
+                var userId = req.params.uid;
+                movieUtils.getMovieStats(userId, function (err, results){
                    if(err){
                        res.send(500, {error: 'HERE' + err});
                    }
