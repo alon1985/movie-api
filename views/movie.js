@@ -6,14 +6,19 @@ module.exports = (function (){
     var config = require('config');
 
     return {
-        '/movies/upload': {
-          'get': function uploadMovieList(req, res, next){
-              var authToken = req.params.key;
-              movieUtils.uploadMovies(authToken, function (err, results){
+        '/movies/export': {
+          'get': function exportMovieList(req, res, next){
+              var userId = req.params.uid;
+              movieUtils.exportMovies(userId, function (err, results){
                  if(err){
                      res.send(500, {error: err});
                  } else {
-                     res.send(200, {status: 'success'});
+                     res.writeHead(200, {
+                         'Content-Length': Buffer.byteLength(results),
+                         'Content-Type': 'text/csv; charset=utf-8'
+                     });
+                     res.write(results);
+                     res.end();
                  }
                  return next();
               });
