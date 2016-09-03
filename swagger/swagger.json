@@ -12,24 +12,24 @@
     "http"
   ],
   "paths": {
-    "/{movieId}": {
+    "/stats": {
       "get": {
         "tags": [
           "Movies"
         ],
-        "summary": "retrieves movie information by id",
+        "summary": "retrieves user's movie stats",
         "parameters": [
           {
-            "name": "movieId",
-            "description": "id of movie requested",
-            "type": "int",
+            "name": "uid",
+            "description": "id of user",
+            "type": "string",
             "required": true,
-            "in": "path"
+            "in": "query"
           }
         ],
         "responses": {
           "200": {
-            "description": "movie data in json format"
+            "description": "movie statistics in json format"
           },
           "500": {
             "description": "unexpected error",
@@ -40,6 +40,34 @@
         }
       }
     },
+    "/export": {
+    "get": {
+      "tags": [
+        "Movies"
+      ],
+      "summary": "download csv of user's movies",
+      "parameters": [
+        {
+          "name": "uid",
+          "description": "id of user",
+          "type": "string",
+          "required": true,
+          "in": "query"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "csv file"
+        },
+        "500": {
+          "description": "unexpected error",
+          "schema": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      }
+    }
+  },
     "/search": {
       "get": {
         "tags": [
@@ -66,6 +94,13 @@
             "description": "how the movie was seen",
             "type": "string",
             "required": false,
+            "in": "query"
+          },
+          {
+            "name": "uid",
+            "description": "id of user",
+            "type": "string",
+            "required": true,
             "in": "query"
           }
         ],

@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/alon85/AlonFilm"
+    "url": "https://github.com/alon85/movie-api"
   },
   "author": "Alon Motro",
   "license": "none",
   "bugs": {
-    "url": "https://github.com/alon85/AlonFilm/issues"
+    "url": "https://github.com/alon85/movie-api/issues"
   },
-  "homepage": "https://github.com/alon85/AlonFilm",
+  "homepage": "https://github.com/alon85/movie-api",
   "dependencies": {
     "@google/cloud-debug": "^0.8.2",
     "bunyan": "^1.8.1",
