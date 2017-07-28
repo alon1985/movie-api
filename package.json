@@ -27,6 +27,7 @@
     "express-pino-logger": "^2.0.0",
     "json2csv": "^3.6.2",
     "lodash": "^3.10.1",
+    "pino": "^4.7.1",
     "request": "^2.67.0"
   }
 }
