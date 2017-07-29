@@ -4,7 +4,11 @@
   "description": "movie API",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "restart": "pm2 restart process.json",
+    "start": "pm2 --no-pmx start process.json",
+    "stop": "pm2 stop process.json",
+    "list": "pm2 list",
+    "kill": "pm2 kill",
     "monitor": "nodemon index.js",
     "mocha": "mocha test/index.js -t 30000",
     "test": "npm run unit-test"
@@ -23,11 +27,11 @@
     "compression": "^1.7.0",
     "config": "^1.26.1",
     "couchbase": "^2.3.5",
-    "express": "^4.13.3",
+    "express": "^4.15.3",
     "express-pino-logger": "^2.0.0",
     "json2csv": "^3.6.2",
     "lodash": "^3.10.1",
-    "pino": "^4.7.1",
+    "pino": "4.7.1",
     "pm2": "^2.6.1",
     "request": "^2.67.0"
   }

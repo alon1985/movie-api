@@ -1,0 +1,13 @@
+{
+  "apps": [
+    {
+      "name": "movie-api",
+      "max_restarts": 20,
+      "script": "index.js",
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "error_file": "/var/log/node/pm2-movie-api-error.log",
+      "out_file": "/var/log/node/pm2-movie-api.log",
+      "instances": "1"
+    }
+  ]
+}
