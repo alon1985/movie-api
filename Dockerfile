@@ -1,6 +1,6 @@
 FROM node:8.1.2
 
-WORKDIR /Users/alon/Library/Mobile Documents/com~apple~CloudDocs/Personal/Code Projects/movie-api
+WORKDIR /app/movie-api
 
 # Install app dependencies
 COPY package.json ./
@@ -11,6 +11,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["pm2", "start", "process.json", "--no-daemon"]

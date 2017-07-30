@@ -9,6 +9,6 @@ var compression = require('compression');
 app.use(compression());
 app.use(require('./routes/routes'));
 
-app.listen(3000, function () {
+app.listen(8080, function () {
     logger.info("listening on port 3000");
 });
