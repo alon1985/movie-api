@@ -20,6 +20,17 @@ router.get('/search', function (req, res, next) {
     });
 });
 
+router.get('/stats', function (req, res, next){
+   utils.getStats(req.query.uid, function(result, err){
+       if(err) {
+           res.status(500).json({'error': err});
+           next();
+       }
+       res.status(200).json(result);
+       next();
+   })
+});
+
 router.get('/export', function (req, res, next) {
     var userId = req.query.uid;
     utils.exportMovieList(userId, function (err, result) {
