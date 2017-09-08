@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/alon85/movie-api",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "compression": "^1.7.0",
     "config": "^1.26.1",
     "couchbase": "^2.3.5",
