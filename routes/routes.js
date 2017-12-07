@@ -44,7 +44,7 @@ router.get('/stats', function (req, res, next){
 });
 */
 router.post('/add', function (req, res, next) {
-    utils.saveMovie(req.body.title, req.body.date, req.body.format, req.body.uid, function (result, err) {
+    utils.saveMovie(req.body.title, req.body.year, req.body.format, req.body.poster, req.body.uid, function (result, err) {
         if (err) {
             res.status(500).json({'error': err});
             next();
