@@ -48,9 +48,17 @@ router.post('/add', function (req, res, next) {
         if (err) {
             res.status(500).json({'error': err});
             next();
+        } else {
+            utils.updateStats(req.body.format, req.body.year, req.body.uid, function (result, err) {
+                if (err) {
+                    res.status(500).json({'error': err});
+                    next();
+                }
+                res.status(200).json(result);
+                next();
+            })
         }
-        res.status(200).json(result);
-        next();
+
     })
 });
 
