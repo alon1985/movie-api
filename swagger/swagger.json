@@ -40,6 +40,55 @@
         }
       }
     },
+    "/add": {
+      "post": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "add's a movie or viewing to a user's list",
+        "parameters": [
+          {
+            "name": "uid",
+            "description": "id of user",
+            "type": "string",
+            "required": true,
+            "in": "query"
+          },
+          {
+            "name": "title",
+            "description": "title of movie",
+            "type": "string",
+            "required": true,
+            "in": "body"
+          },
+          {
+            "name": "format",
+            "description": "format the movie was seen in",
+            "type": "string",
+            "required": true,
+            "in": "body"
+          },
+          {
+            "name": "date",
+            "description": "date movie was seen",
+            "type": "string",
+            "required": true,
+            "in": "body"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success/failure"
+          },
+          "500": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/export": {
     "get": {
       "tags": [

@@ -1,12 +1,15 @@
 {
   "name": "movie-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "movie API",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "restart": "pm2 restart process.json",
+    "start": "pm2 --no-pmx start process.json",
+    "stop": "pm2 stop process.json",
+    "list": "pm2 list",
+    "kill": "pm2 kill",
     "monitor": "nodemon index.js",
-    "deploy": "gcloud preview app deploy app.yaml",
     "mocha": "mocha test/index.js -t 30000",
     "test": "npm run unit-test"
   },
@@ -21,28 +24,24 @@
   },
   "homepage": "https://github.com/alon85/movie-api",
   "dependencies": {
-    "@google/cloud-debug": "^0.8.2",
-    "bunyan": "^1.8.1",
-    "bunyan-config": "^0.2.0",
-    "config": "^1.17.1",
-    "express": "^4.13.3",
-    "gcloud": "^0.35.0",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.17.2",
+    "compression": "^1.7.0",
+    "config": "^1.26.1",
+    "couchbase": "2.4.3",
+    "express": "^4.15.3",
+    "express-pino-logger": "^2.0.0",
     "json2csv": "^3.6.2",
-    "kerberos": "0.0.21",
-    "lodash": "^3.10.1",
-    "mysql": "^2.10.2",
-    "request": "^2.67.0",
-    "restify": ">= 4.0.3",
-    "swagger-ui": "^2.1.3"
+    "lodash": "4.17.4",
+    "pino": "4.7.1",
+    "pm2": "2.8.0",
+    "request": "^2.67.0"
   },
   "devDependencies": {
-    "chai": ">= 3.4",
-    "istanbul": "^0.4.0",
-    "merge": "^1.2.0",
-    "mocha": ">= 2.3",
-    "mockery": "^1.4.0"
-  },
-  "engines": {
-    "node": ">=5.0.0"
+    "chai": "^4.1.0",
+    "sinon": "^2.4.1",
+    "mockey": "0.0.0",
+    "mocha": "^3.4.2",
+    "mockery": "^1.7.0"
   }
 }
