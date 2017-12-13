@@ -23,7 +23,7 @@ describe('utils', function() {
         couchbaseClientMock = {
             getBucket: sinon.stub().returns(movieBucketMock)
         };
-        mockery.registerAllowables(['../../lib/utils.js', 'lodash', 'json2csv']);
+        mockery.registerAllowables(['../../lib/movie-utils.js', 'lodash', 'json2csv']);
         var config = {
             couchbase: {
                 buckets: {}
@@ -38,7 +38,7 @@ describe('utils', function() {
             return {error: sinon.stub()};
         });
         mockery.registerMock('./couchbase/client.js', couchbaseClientMock);
-        utils = require('../../lib/utils.js');
+        utils = require('../../lib/movie-utils.js');
     });
 
     after(function() {

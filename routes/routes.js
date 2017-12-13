@@ -1,6 +1,6 @@
 var express = require('express');
 var logger = require('../lib/logger.js');
-var utils = require('../lib/utils.js');
+var movieUtils = require('../lib/movie-utils.js');
 var router = express.Router();
 
 router.use(function (req, res, next) {
@@ -10,7 +10,7 @@ router.use(function (req, res, next) {
 
 
 router.get('/search', function (req, res, next) {
-    utils.searchForMovies(req.query, function (result, err) {
+    movieUtils.searchForMovies(req.query, function (result, err) {
         if (err) {
             res.status(500).json({'error': err});
             next();
@@ -21,7 +21,7 @@ router.get('/search', function (req, res, next) {
 });
 
 router.get('/stats', function (req, res, next){
-   utils.getStats(req.query.uid, function(result, err){
+    movieUtils.getStats(req.query.uid, function (result, err) {
        if(err) {
            res.status(500).json({'error': err});
            next();
@@ -30,26 +30,28 @@ router.get('/stats', function (req, res, next){
        next();
    })
 });
-/*router.get('/export', function (req, res, next) {
+router.get('/export', function (req, res, next) {
     var userId = req.query.uid;
-    utils.exportMovieList(userId, function (err, result) {
+    movieUtils.exportMovieList(userId, function (result, err) {
         if (err) {
             res.status(500).json({'error': err});
-            next();
+            return next();
         }
         res.set('Content-Type', 'text/csv; charset=utf-8');
-        res.status(200).send(new Buffer(result));
+        res.setHeader('Content-disposition', 'attachment; filename=movies.csv');
+        res.set('Content-Type', 'text/csv');
+        res.status(200).send(result);
         next();
     });
 });
-*/
+
 router.post('/add', function (req, res, next) {
-    utils.saveMovie(req.body.title, req.body.year, req.body.format, req.body.poster, req.body.uid, function (result, err) {
+    movieUtils.saveMovie(req.body.title, req.body.year, req.body.format, req.body.poster, req.body.uid, function (result, err) {
         if (err) {
             res.status(500).json({'error': err});
             next();
         } else {
-            utils.updateStats(req.body.format, req.body.year, req.body.uid, function (result, err) {
+            movieUtils.updateStats(req.body.format, req.body.year, req.body.uid, function (result, err) {
                 if (err) {
                     res.status(500).json({'error': err});
                     next();
