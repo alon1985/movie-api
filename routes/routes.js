@@ -8,8 +8,18 @@ router.use(function (req, res, next) {
     next()
 });
 
+router.get('/movies/get', function (req, res, next) {
+    movieUtils.getMovies(req.query.uid, function (result, err) {
+        if (err) {
+            res.status(500).json({'error': err});
+            next();
+        }
+        res.status(200).json(result);
+        next();
+    });
+});
 
-router.get('/search', function (req, res, next) {
+router.get('/movies/search', function (req, res, next) {
     movieUtils.searchForMovies(req.query, function (result, err) {
         if (err) {
             res.status(500).json({'error': err});
@@ -20,7 +30,7 @@ router.get('/search', function (req, res, next) {
     });
 });
 
-router.get('/stats', function (req, res, next){
+router.get('/movies/stats', function (req, res, next){
     movieUtils.getStats(req.query.uid, function (result, err) {
        if(err) {
            res.status(500).json({'error': err});
@@ -30,7 +40,7 @@ router.get('/stats', function (req, res, next){
        next();
    })
 });
-router.get('/export', function (req, res, next) {
+router.get('/movies/export', function (req, res, next) {
     var userId = req.query.uid;
     movieUtils.exportMovieList(userId, function (result, err) {
         if (err) {
@@ -45,7 +55,7 @@ router.get('/export', function (req, res, next) {
     });
 });
 
-router.post('/add', function (req, res, next) {
+router.post('/movies/add', function (req, res, next) {
     movieUtils.saveMovie(req.body.title, req.body.year, req.body.format, req.body.poster, req.body.uid, function (result, err) {
         if (err) {
             res.status(500).json({'error': err});
