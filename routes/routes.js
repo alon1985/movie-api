@@ -8,37 +8,34 @@ router.use(function (req, res, next) {
     next()
 });
 
-router.get('/movies/get', function (req, res, next) {
-    movieUtils.getMovies(req.query.uid, function (result, err) {
-        if (err) {
-            res.status(500).json({'error': err});
-            next();
-        }
+router.get('/movies', function (req, res, next) {
+    movieUtils.getMovies(req.query.uid).then(function (result) {
         res.status(200).json(result);
+        next();
+    }).catch(function (error) {
+        res.status(500).json({'error': error});
         next();
     });
 });
 
 router.get('/movies/search', function (req, res, next) {
-    movieUtils.searchForMovies(req.query, function (result, err) {
-        if (err) {
-            res.status(500).json({'error': err});
-            next();
-        }
+    movieUtils.searchForMovies(req.query).then(function (result) {
         res.status(200).json(result);
+        next();
+    }).catch(function (error) {
+        res.status(500).json({'error': error});
         next();
     });
 });
 
-router.get('/movies/stats', function (req, res, next){
-    movieUtils.getStats(req.query.uid, function (result, err) {
-       if(err) {
-           res.status(500).json({'error': err});
-           next();
-       }
-       res.status(200).json(result);
-       next();
-   })
+router.get('/movies/stats', function (req, res, next) {
+    movieUtils.getStats(req.query.uid).then(function (result) {
+        res.status(200).json(result);
+        next();
+    }).catch(function (error) {
+        res.status(500).json({'error': error});
+        next();
+    });
 });
 router.get('/movies/export', function (req, res, next) {
     var userId = req.query.uid;
@@ -56,22 +53,15 @@ router.get('/movies/export', function (req, res, next) {
 });
 
 router.post('/movies/add', function (req, res, next) {
-    movieUtils.saveMovie(req.body.title, req.body.year, req.body.format, req.body.poster, req.body.uid, function (result, err) {
-        if (err) {
-            res.status(500).json({'error': err});
+    movieUtils.saveMovie(req.body.title, req.body.year, req.body.format, req.body.poster, req.body.uid).then(function (result) {
+        movieUtils.updateStats(req.body.format, req.body.year, req.body.uid).then(function (result) {
+            res.status(200).json(result);
             next();
-        } else {
-            movieUtils.updateStats(req.body.format, req.body.year, req.body.uid, function (result, err) {
-                if (err) {
-                    res.status(500).json({'error': err});
-                    next();
-                }
-                res.status(200).json(result);
-                next();
-            })
-        }
-
-    })
+        }).catch(function (error) {
+            res.status(500).json({'error': error});
+            next();
+        });
+    });
 });
 
 module.exports = router;
