@@ -18,6 +18,16 @@ router.get('/movies', function (req, res, next) {
     });
 });
 
+router.get('/movies/watchlist', function (req, res, next) {
+    movieUtils.getWatchlist(req.query.uid).then(function (result) {
+        res.status(200).json(result);
+        next();
+    }).catch(function (error) {
+        res.status(500).json({'error': error});
+        next();
+    });
+});
+
 router.get('/movies/search', function (req, res, next) {
     movieUtils.searchForMovies(req.query).then(function (result) {
         res.status(200).json(result);
@@ -61,6 +71,16 @@ router.post('/movies/add', function (req, res, next) {
             res.status(500).json({'error': error});
             next();
         });
+    });
+});
+
+router.post('/movies/watchlist/add', function (req, res, next) {
+    movieUtils.saveMovieToWatchlist(req.body.title, req.body.releaseDate, req.body.poster, req.body.uid).then(function (result) {
+        res.status(200).json(result);
+        next();
+    }).catch(function (error) {
+        res.status(500).json({'error': error});
+        next();
     });
 });
 
