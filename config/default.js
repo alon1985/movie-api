@@ -7,6 +7,6 @@ module.exports = {
                 password: 'al3185on1'
             }
         },
-        cluster: 'alonfilm.database.jamotro.com'
+        cluster: 'cinemafile.database.jamotro.com'
     }
 };
