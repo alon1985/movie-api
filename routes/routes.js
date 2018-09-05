@@ -63,7 +63,7 @@ router.get('/movies/export', function (req, res, next) {
 });
 
 router.post('/movies/add', function (req, res, next) {
-    movieUtils.saveMovie(req.body.title, req.body.year, req.body.format, req.body.poster, req.body.plot, req.body.uid).then(function (result) {
+    movieUtils.saveMovie(req.body.title, req.body.year, req.body.format, req.body.poster, req.body.plot, res.body.releaseYear, req.body.uid).then(function (result) {
         movieUtils.updateStats("add", req.body.format, req.body.year, req.body.uid).then(function (result) {
             res.status(200).json(result);
             next();
@@ -75,7 +75,7 @@ router.post('/movies/add', function (req, res, next) {
 });
 
 router.post('/movies/remove', function (req, res, next) {
-    movieUtils.removeMovie(req.body.title, req.body.poster, req.body.uid).then(function (result) {
+    movieUtils.removeMovie(req.body.title, req.body.releaseYear, req.body.poster, req.body.uid).then(function (result) {
         res.status(200).json(result);
         next();
     }).catch(function (error) {
