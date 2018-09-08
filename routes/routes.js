@@ -75,7 +75,7 @@ router.post('/movies/add', function (req, res, next) {
 });
 
 router.post('/movies/remove', function (req, res, next) {
-    movieUtils.removeMovie(req.body.title, req.body.releaseYear, req.body.poster, req.body.uid).then(function (result) {
+    movieUtils.removeMovie(req.body.title, req.body.poster, req.body.uid).then(function (result) {
         res.status(200).json(result);
         next();
     }).catch(function (error) {
