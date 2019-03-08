@@ -126,7 +126,7 @@ describe('utils', function() {
 
     });
 
-    describe('updateFormatsByYearStats', function() {
+    describe('updateTheaterStats', function() {
         var utils;
         var couchbaseClientMock;
         var movieBucketMock;
@@ -165,7 +165,6 @@ describe('utils', function() {
 
         it('should add counter to the In Theaters number for that year and format if they exist and counter is greater than 0', function () {
             var counter = 1;
-            var format = 'In Theaters';
             var initialStats =
             {
                 formatsByYear: {
@@ -183,13 +182,12 @@ describe('utils', function() {
                     }
                 }
             };
-            var result = utils.updateFormatsByYearStats(initialStats, 2019, format, counter);
+            var result = utils.updateTheaterStats(initialStats, 2019, counter);
             expect(result).to.eql(expectedStats);
         });
 
         it('should add counter to the In Theaters number for that year and format if they exist and counter is 0', function () {
             var counter = 0;
-            var format = 'In Theaters';
             var initialStats =
                 {
                     formatsByYear: {
@@ -207,141 +205,7 @@ describe('utils', function() {
                     }
                 }
             };
-            var result = utils.updateFormatsByYearStats(initialStats, 2019, format, counter);
-            expect(result).to.eql(expectedStats);
-        });
-
-        it('should add counter to the Video number for that year and format if they exist and counter is greater than 0', function () {
-            var counter = 1;
-            var format = 'Video';
-            var initialStats =
-                {
-                    formatsByYear: {
-                        2019: {
-                            'In Theaters': 1,
-                            'Video': 0
-                        }
-                    }
-                };
-            var expectedStats = {
-                formatsByYear: {
-                    2019: {
-                        'In Theaters': 1,
-                        'Video': 1
-                    }
-                }
-            };
-            var result = utils.updateFormatsByYearStats(initialStats, 2019, format, counter);
-            expect(result).to.eql(expectedStats);
-        });
-
-        it('should add counter to the Video number for that year and format if they exist and counter is 0', function () {
-            var counter = 0;
-            var format = 'Video';
-            var initialStats =
-                {
-                    formatsByYear: {
-                        2019: {
-                            'In Theaters': 1,
-                            'Video': 0
-                        }
-                    }
-                };
-            var expectedStats = {
-                formatsByYear: {
-                    2019: {
-                        'In Theaters': 1,
-                        'Video': 0
-                    }
-                }
-            };
-            var result = utils.updateFormatsByYearStats(initialStats, 2019, format, counter);
-            expect(result).to.eql(expectedStats);
-        });
-
-        it('should set the stats for that year and format to 1 if there was no value before', function () {
-           var counter = 1;
-           var format = 'In Theaters';
-            var initialStats =
-                {
-                    formatsByYear: {
-                        2019: {
-                            'Video': 0
-                        }
-                    }
-                };
-            var expectedStats = {
-                formatsByYear: {
-                    2019: {
-                        'In Theaters': 1,
-                        'Video': 0
-                    }
-                }
-            };
-            var result = utils.updateFormatsByYearStats(initialStats, 2019, format, counter);
-            expect(result).to.eql(expectedStats);
-        });
-
-        it('should set the stats for that year and format to 1 if there was no value before', function () {
-            var counter = 1;
-            var format = 'Video';
-            var initialStats =
-                {
-                    formatsByYear: {
-                        2019: {
-                            'In Theaters': 0
-                        }
-                    }
-                };
-            var expectedStats = {
-                formatsByYear: {
-                    2019: {
-                        'In Theaters': 0,
-                        'Video': 1
-                    }
-                }
-            };
-            var result = utils.updateFormatsByYearStats(initialStats, 2019, format, counter);
-            expect(result).to.eql(expectedStats);
-        });
-
-        it('should initialize stats for that year if it does not exist and set the requested format to 1 if counter is greater than 0', function () {
-            var counter = 1;
-            var format = 'Video';
-            var initialStats =
-                {
-                    formatsByYear: {
-                    }
-                };
-            var expectedStats = {
-                formatsByYear: {
-                    2019: {
-                        'In Theaters': 0,
-                        'Video': 1
-                    }
-                }
-            };
-            var result = utils.updateFormatsByYearStats(initialStats, 2019, format, counter);
-            expect(result).to.eql(expectedStats);
-        });
-
-        it('should initialize stats for that year if it does not exist and set the requested format to 1 if counter is greater than 0', function () {
-            var counter = 1;
-            var format = 'In Theaters';
-            var initialStats =
-                {
-                    formatsByYear: {
-                    }
-                };
-            var expectedStats = {
-                formatsByYear: {
-                    2019: {
-                        'In Theaters': 1,
-                        'Video': 0
-                    }
-                }
-            };
-            var result = utils.updateFormatsByYearStats(initialStats, 2019, format, counter);
+            var result = utils.updateTheaterStats(initialStats, 2019, counter);
             expect(result).to.eql(expectedStats);
         });
 
