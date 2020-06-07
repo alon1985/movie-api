@@ -34,7 +34,7 @@
     "json2csv": "3.6.2",
     "lodash": "4.17.4",
     "pino": "4.7.1",
-    "pm2": "2.8.0",
+    "pm2": "4.4.0",
     "request": "2.67.0"
   },
   "devDependencies": {
