@@ -13,4 +13,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["pm2-runtime", "start", "process.json", "--no-daemon"]
+CMD ["pm2-runtime", "start", "process.json"]
