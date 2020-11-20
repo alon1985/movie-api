@@ -4,16 +4,22 @@ var movieUtils = require('../lib/movie-utils.js');
 var router = express.Router();
 
 router.use(function (req, res, next) {
-    if (!req.query.uid && !req.body.uid) return next('router');
-    next()
+    if (!req.query.uid && !req.body.uid) {
+        return next('router');
+    }
 });
+
+router.get('/service-status', function (req, res, next) {
+    res.status(200).json({ 'status': 'ok' })
+    next();
+})
 
 router.get('/movies', function (req, res, next) {
     movieUtils.getMovies(req.query.uid).then(function (result) {
         res.status(200).json(result);
         next();
     }).catch(function (error) {
-        res.status(500).json({'error': error});
+        res.status(500).json({ 'error': error });
         next();
     });
 });
@@ -23,7 +29,7 @@ router.get('/movies/watchlist', function (req, res, next) {
         res.status(200).json(result);
         next();
     }).catch(function (error) {
-        res.status(500).json({'error': error});
+        res.status(500).json({ 'error': error });
         next();
     });
 });
@@ -33,7 +39,7 @@ router.get('/movies/search', function (req, res, next) {
         res.status(200).json(result);
         next();
     }).catch(function (error) {
-        res.status(500).json({'error': error});
+        res.status(500).json({ 'error': error });
         next();
     });
 });
@@ -43,7 +49,7 @@ router.get('/movies/stats', function (req, res, next) {
         res.status(200).json(result);
         next();
     }).catch(function (error) {
-        res.status(500).json({'error': error});
+        res.status(500).json({ 'error': error });
         next();
     });
 });
@@ -51,7 +57,7 @@ router.get('/movies/export', function (req, res, next) {
     var userId = req.query.uid;
     movieUtils.exportMovieList(userId, function (result, err) {
         if (err) {
-            res.status(500).json({'error': err});
+            res.status(500).json({ 'error': err });
             return next();
         }
         res.set('Content-Type', 'text/csv; charset=utf-8');
@@ -68,7 +74,7 @@ router.post('/movies/add', function (req, res, next) {
             res.status(200).json(result);
             next();
         }).catch(function (error) {
-            res.status(500).json({'error': error});
+            res.status(500).json({ 'error': error });
             next();
         });
     });
@@ -79,7 +85,7 @@ router.post('/movies/remove', function (req, res, next) {
         res.status(200).json(result);
         next();
     }).catch(function (error) {
-        res.status(500).json({'error': error});
+        res.status(500).json({ 'error': error });
         next();
     });
 });
@@ -89,7 +95,7 @@ router.post('/movies/watchlist/add', function (req, res, next) {
         res.status(200).json(result);
         next();
     }).catch(function (error) {
-        res.status(500).json({'error': error});
+        res.status(500).json({ 'error': error });
         next();
     });
 });
@@ -99,7 +105,7 @@ router.post('/movies/watchlist/remove', function (req, res, next) {
         res.status(200).json(result);
         next();
     }).catch(function (error) {
-        res.status(500).json({'error': error});
+        res.status(500).json({ 'error': error });
         next();
     });
 });
