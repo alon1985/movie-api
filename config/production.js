@@ -4,7 +4,7 @@ module.exports = {
         buckets: {
             'movies': {
                 name: 'movies',
-                password: 'al3185on1'
+                password: ''
             }
         },
         cluster: 'cinemafile.database.jamotro.com'
