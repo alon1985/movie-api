@@ -7,11 +7,17 @@
   "author": "Alon Motro",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": "14.15.0"
+  },
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-promise-router": "^4.0.1",
+    "lodash": "^4.17.20",
+    "pg": "^8.5.1"
   },
   "devDependencies": {
     "eslint": "^7.13.0"
