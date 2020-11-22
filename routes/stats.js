@@ -1,14 +1,13 @@
 const Router = require('express-promise-router')
 const processor = require('../utils/processor.js');
 
-const router = new Router()
-module.exports = router
+const router = new Router();
+module.exports = router;
 
 router.get('/years', async (req, res) => {
     const results = await processor.getYearStats(req.params.year);
     res.status(200).json(results);
 });
-
 
 router.get('/years/:year', async (req, res) => {
     const results = await processor.getYearStats(req.params.year);

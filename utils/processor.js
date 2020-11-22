@@ -6,16 +6,44 @@ const dbUtils = require('../utils/dal.js');
 let processor;
 
 module.exports = processor = {
-    getMovies: async function (id) {
-        const results = await dbUtils.getMovies(id);
+    getMovie: async function (id) {
+        const results = await dbUtils.getMovie(id);
         return this.aggregateMovieResults(results);
     },
-    searchMovies: async function(parameters) {
-        const results = await dbUtils.searchMovies(parameters);
+    getMovies: async function(parameters) {
+        const results = await dbUtils.getMovies(parameters);
         return this.aggregateMovieResults(results);
     },
-    deleteMovie: async function(id) {
-        //TODO
+    getWatchlistMovies: async function() {
+        const results = await dbUtils.getWatchlistMovies();
+        return this.aggregateMovieResults(results);
+    },
+    deleteMovie: async function(id, isWatchlist) {
+        //should delete from movie db and then cascade to seen db
+    },
+    saveMovieSeen: async function(title, year, format, poster, plot) {
+        //save individual movie - get id
+        //save into seen
+    },
+    _saveMovie: async function () {
+        //save individual movie
+        //return id
+    },
+    exportMovies: async function () {
+        //get movies
+        /*
+        _.forEach(movieList, function (movie) {
+                var newMovie = {
+                    'Title': movie.title,
+                    'Format': _.flatMap(movie.seen, 'format').length > 1 ? _.join(_.flatMap(movie.seen, 'format'), ' || ') : movie.seen[0].format,
+                    'Year': _.flatMap(movie.seen, 'seen').length > 1 ? _.join(_.flatMap(movie.seen, 'seen'), ' || ') : movie.seen[0].seen,
+                };
+                newListObject.push(newMovie);
+            });
+            var cellHeaders = ['Title', 'Format', 'Year'];
+            var csv = json2csv({data: newListObject, fields: cellHeaders, del: '\t'});
+            callback(csv);
+         */
     },
     getYearStats: async function (year) {
         const results = await dbUtils.getYearStats(year);
@@ -76,7 +104,7 @@ module.exports = processor = {
                 poster: finalResult.poster,
                 seen: seenFormats
             });
-        })
+        });
         return finalResults;
     }
-}
+};

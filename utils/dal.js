@@ -13,7 +13,7 @@ client.connect();
 let dbUtils;
 
 module.exports = dbUtils = {
-    getMovies: async function (id) {
+    getMovie: async function (id) {
         const whereClause = _.isEmpty(id) ? '' : `where movies.id = ${id}`;
         const records = `select a.name, a.id, a.poster, a.description, a.year, format from (
                            select name, movies.id, poster, description, year, formatId
@@ -24,7 +24,7 @@ module.exports = dbUtils = {
 
         return await dbUtils.getRecords(records);
     },
-    searchMovies: async function (parameters) {
+    getMovies: async function (parameters) {
         const titleClause = _.isEmpty(parameters.title) ? '' : `where movies.name ilike '%${parameters.title}%'`;
         const formatClause = _.isEmpty(parameters.format) ? '' : `where format = '${parameters.format}'`;
         let yearClause = _.isEmpty(parameters.year) ? '' : ` year = ${parameters.year}`;
@@ -41,6 +41,9 @@ module.exports = dbUtils = {
                        ${formatClause}`;
 
         return await dbUtils.getRecords(query);
+    },
+    getWatchlistMovies: async function () {
+
     },
     getYearStats: async function(year) {
         const whereClause = _.isEmpty(year) ? '' : `where year = ${year}`;

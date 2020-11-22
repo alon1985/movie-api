@@ -63,3 +63,4 @@ typings/
 
 *.xml
 *.iml
+.DS_Store

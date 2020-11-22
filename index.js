@@ -1,14 +1,14 @@
-const express = require('express')
-const app = express()
-const mountRoutes = require('./routes')
-const port = 3000
+const express = require('express');
+const app = express();
+const mountRoutes = require('./routes');
+const port = 3000;
 
-app.use(express.json());
+app.use(express.json());;
 app.use(express.urlencoded({extended: true}));
 
 
-mountRoutes(app)
+mountRoutes(app);
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`)
-})
+    console.log(`Listening on port ${port}`);
+});
