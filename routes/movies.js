@@ -1,5 +1,6 @@
-const Router = require('express-promise-router')
-const processor = require('../utils/processor.js');
+const Router = require('express-promise-router');
+const processor = require('../lib/processor.js');
+const requestUtils = require('../utils/request-utils.js');
 
 const router = new Router();
 module.exports = router;
@@ -29,11 +30,16 @@ router.delete('/watchlist/:id', async (req, res) => {
 })
 
 router.post('/add', async (req, res) => {
-    const results = await processor.saveMovieSeen(req.params.title, req.params.year, req.params.format, req.params.poster, req.params.plot);
+    if(requestUtils.isRequestValid(req.body)) {
+        const results = await processor.saveMovieSeen(req.body.title, req.body.year, req.body.format, req.body.poster, req.body.plot);
+        res.status(200).json(results);
+    }
+    res.status(400).json({ 'status': 'Bad request - missing body fields'});
 });
 
 router.post('/add/watchlist', async (req, res) => {
-    const results = await processor.saveMovieToWatchlist(req.params.title, req.params.releaseDate, req.params.poster, req.params.plot);
+    const results = await processor.saveMovieToWatchlist(req.body.title, req.body.releaseDate, req.body.poster, req.body.plot);
+    res.status(200).json(results);
 
 });
 

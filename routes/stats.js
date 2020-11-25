@@ -1,5 +1,5 @@
 const Router = require('express-promise-router')
-const processor = require('../utils/processor.js');
+const processor = require('../lib/processor.js');
 
 const router = new Router();
 module.exports = router;
