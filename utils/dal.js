@@ -16,14 +16,14 @@ let dbUtils;
 module.exports = dbUtils = {
     getMovie: async function (id) {
         const whereClause = _.isEmpty(id) ? '' : `where movies.id = ${id}`;
-        const records = `select a.name, a.id, a.poster, a.description, a.year, format from (
+        const query = `select a.name, a.id, a.poster, a.description, a.year, format from (
                            select name, movies.id, poster, description, year, formatId
                            from movies
-                           inner join seen on seen.movieid = movies.id
+                           inner join movies_seen on movies_seen.movieid = movies.id
                             ${whereClause}) as a
                            inner join formats on formats.id = a.formatId`;
 
-        return await dbUtils.executeQuery(records);
+        return await dbUtils.executeQuery([query]);
     },
     getMovies: async function (parameters) {
         const titleClause = _.isEmpty(parameters.title) ? '' : `where movies.name ilike '%${parameters.title}%'`;
@@ -36,19 +36,25 @@ module.exports = dbUtils = {
         const query = `select a.name, a.id, a.poster, a.description, a.year, format from (
                        select name, movies.id, poster, description, year, formatId
                        from movies
-                       inner join seen on seen.movieid = movies.id
+                       inner join movies_seen on movies_seen.movieid = movies.id
                        ${titleClause} ${yearClause}) as a
                        inner join formats on formats.id = a.formatId
                        ${formatClause}`;
 
-        return await dbUtils.executeQuery(query);
+        return await dbUtils.executeQuery([query]);
     },
     getWatchlistMovies: async function () {
-        const query = `select a.name, a.id, a.poster, a.description, releaseDate from (
-                       select name, movies.id, poster, description 
-                       from movies
-                       inner join watchlist on watchlist.movieId = movies.id`;
-        return await dbUtils.executeQuery(query);
+        const query = `select a.name, a.id as movieId, a.poster, a.description, releaseDate from (
+                       select name, movies.id, poster, description from movies) as a
+                       inner join watchlist on watchlist.movieId = a.id`;
+        return await dbUtils.executeQuery([query]);
+    },
+    getWatchlistMovie: async function (id) {
+        const query = `select a.name, a.id as movieId, a.poster, a.description, releaseDate from (
+                       select name, movies.id, poster, description from movies) as a
+                       inner join watchlist on watchlist.movieId = a.id
+                       where watchlist.id = ${id}`;
+        return await dbUtils.executeQuery([query]);
     },
     saveMovie: async function (title, poster, plot) {
         const titleClause = title.replace(regex, "''");
@@ -56,48 +62,76 @@ module.exports = dbUtils = {
         const plotClause = plot.replace(regex, "''");
         const query = `insert into movies (name, poster, description) 
                        values ('${titleClause}', '${posterClause}', '${plotClause}') RETURNING id`;
-        const results = await dbUtils.executeQuery(query);
+        const results = await dbUtils.executeQuery([query], true);
         return results[0].id;
     },
     saveToWatchlist: async function (movieId, releaseDate) {
         const query = `insert into watchlist(movieId, releaseDate) 
                     values (${movieId}, '${releaseDate}') RETURNING id`
-        const results = await dbUtils.executeQuery(query);
+        const results = await dbUtils.executeQuery([query], true);
         return results[0].id;
     },
     saveViewRecord: async function (movieId, year, format) {
-        const query = `insert into seen (movieid, formatid, year) 
+        const query = `insert into movies_seen (movieid, formatid, year) 
                         values (${movieId}, (select id from formats where format ilike '%${format}%'), ${year}) RETURNING id`;
-        const results = await dbUtils.executeQuery(query);
+        const results = await dbUtils.executeQuery([query], true);
         return results[0].id;
+    },
+    deleteMovie: async function (movieId, isWatchlist) {
+        const fromClause = isWatchlist ? 'from watchlist' : 'from movies_seen';
+        const query = `delete ${fromClause} where movieId = ${movieId}`;
+        const query2 = `delete from movies where id = ${movieId}`
+        const queries = [query];
+        if(!isWatchlist) {
+            queries.push(query2)
+        }
+        return await dbUtils.executeQuery(queries, true);
     },
     getYearStats: async function(year) {
         const whereClause = _.isEmpty(year) ? '' : `where year = ${year}`;
-        const records = `select year, count(year)::INTEGER from seen ${whereClause} group by year order by year`;
-        return await dbUtils.executeQuery(records);
+        const query = `select year, count(year)::INTEGER from movies_seen ${whereClause} group by year order by year`;
+        return await dbUtils.executeQuery([query]);
     },
     getFormatStats: async function (format) {
         const whereClause = _.isEmpty(format) ? '' : `where format = '${format}'`;
-        const records = `select format, s.formatCount::INTEGER as count from (
-                         select formatId as id, count(formatId) as formatCount from seen group by formatId) as s
+        const query = `select format, s.formatCount::INTEGER as count from (
+                         select formatId as id, count(formatId) as formatCount from movies_seen group by formatId) as s
                          inner join formats on formats.id = s.id ${whereClause}`;
 
-        return await dbUtils.executeQuery(records);
+        return await dbUtils.executeQuery([query]);
     },
     getFormatStatsByYear: async function(year) {
-        const records = `select format, a.count::INTEGER as count from
-                         (select formatid, count(formatId) as count from seen where year = ${year} group by formatId)as a
+        const query = `select format, a.count::INTEGER as count from
+                         (select formatid, count(formatId) as count from movies_seen where year = ${year} group by formatId)as a
                          inner join formats on formats.id = a.formatid`;
 
-        return await dbUtils.executeQuery(records);
+        return await dbUtils.executeQuery([query]);
     },
-    executeQuery: async function (queryText) {
+    executeQuery: async function (queries, isTransaction) {
+        if (isTransaction) {
+            return dbUtils._executeTransaction(queries);
+        }
         try {
-            let {rows: results} = await client.query(queryText);
+            let {rows: results} = await client.query(queries[0]);
             return results;
         } catch (e) {
             console.error('problem retrieving records', e);
             return { error: 'problem with database transaction'};
         }
     },
+    _executeTransaction: async function (queries) {
+        try {
+            await client.query('BEGIN')
+            let {rows: results} = await client.query(queries[0]);
+            if(queries[1]) {
+                await client.query(queries[1]);
+            }
+            await client.query('COMMIT')
+            return results;
+        } catch (e) {
+            await client.query('ROLLBACK');
+            console.error('problem executing transaction');
+            return { error: 'problem executing transaction'}
+        }
+    }
 }
