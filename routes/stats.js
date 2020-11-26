@@ -1,7 +1,9 @@
+'use strict';
+
 const Router = require('express-promise-router')
 const processor = require('../lib/processor.js');
-
 const router = new Router();
+
 module.exports = router;
 
 router.get('/years', async (req, res) => {

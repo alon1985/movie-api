@@ -80,10 +80,10 @@ module.exports = dbUtils = {
     deleteMovie: async function (movieId, isWatchlist) {
         const fromClause = isWatchlist ? 'from watchlist' : 'from movies_seen';
         const query = `delete ${fromClause} where movieId = ${movieId}`;
-        const query2 = `delete from movies where id = ${movieId}`
+        const query2 = `delete from movies where id = ${movieId}`;
         const queries = [query];
         if(!isWatchlist) {
-            queries.push(query2)
+            queries.push(query2);
         }
         return await dbUtils.executeQuery(queries, true);
     },
@@ -121,12 +121,12 @@ module.exports = dbUtils = {
     },
     _executeTransaction: async function (queries) {
         try {
-            await client.query('BEGIN')
+            await client.query('BEGIN');
             let {rows: results} = await client.query(queries[0]);
             if(queries[1]) {
                 await client.query(queries[1]);
             }
-            await client.query('COMMIT')
+            await client.query('COMMIT');
             return results;
         } catch (e) {
             await client.query('ROLLBACK');

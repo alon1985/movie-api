@@ -1,8 +1,10 @@
+'use strict';
+
 const Router = require('express-promise-router');
 const processor = require('../lib/processor.js');
 const requestUtils = require('../utils/request-utils.js');
-
 const router = new Router();
+
 module.exports = router;
 
 router.get('/movies/:id', async (req, res) => {
@@ -27,12 +29,12 @@ router.get('/watchlist/:id', async (req, res) => {
 })
 
 router.delete('/movies/:id', async (req, res) => {
-    const results = await processor.deleteMovie(req.params.id, false)
+    const results = await processor.deleteMovie(req.params.id, false);
     return res.status(200).json(results);
 });
 
 router.delete('/watchlist/:id', async (req, res) => {
-    const results = await processor.deleteMovie(req.params.id, true)
+    const results = await processor.deleteMovie(req.params.id, true);
     return res.status(200).json(results);
 })
 
