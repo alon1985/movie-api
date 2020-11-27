@@ -48,7 +48,7 @@ module.exports = dbUtils = {
                            select name, movies.id, poster, description, year, formatId
                            from movies
                            inner join movies_seen on movies_seen.movieid = movies.id
-                            ${whereClause}) as a
+                            ${whereClause} order by movies_seen.id desc) as a
                            inner join formats on formats.id = a.formatId`;
 
         return await dbUtils.executeQuery([query]);
@@ -65,7 +65,7 @@ module.exports = dbUtils = {
                        select name, movies.id, poster, description, year, formatId
                        from movies
                        inner join movies_seen on movies_seen.movieid = movies.id
-                       ${titleClause} ${yearClause}) as a
+                       ${titleClause} ${yearClause} order by movies_seen.id desc) as a
                        inner join formats on formats.id = a.formatId
                        ${formatClause}`;
 
