@@ -5,7 +5,7 @@ const _ = require('lodash');
 const fs = require('fs');
 
 console.log(`env: ${process.env.NODE_ENV}`)
-
+let client;
 if(process.env.NODE_ENV === 'production') {
     const config = {
         database: 'movie-db',
@@ -19,9 +19,7 @@ if(process.env.NODE_ENV === 'production') {
             ca: fs.readFileSync(__dirname + '/ca-certificate.crt').toString(),
         },
     }
-
-
-    const client = new Client(config)
+    client = new Client(config)
     console.log('trying to connect');
     client.connect(err => {
         if (err) {
@@ -33,7 +31,7 @@ if(process.env.NODE_ENV === 'production') {
 } else {
     const connectionString = 'postgresql://localhost/alon'
 
-    const client = new Client({
+   client = new Client({
         connectionString,
     })
     client.connect();
