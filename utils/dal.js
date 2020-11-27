@@ -7,7 +7,7 @@ const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
     connectionString,
 })
-
+/*
 const config = {
     database: 'movie-db',
     host: process.env.DATABASE_HOST,
@@ -19,9 +19,17 @@ const config = {
         rejectUnauthorized: false,
         ca: fs.readFileSync(__dirname + '/ca-certificate.crt').toString(),
     },
-}
+}*/
 
 
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+});
+
+client.connect();
+
+/*
 const client = new Client(config)
 client.connect(err => {
     if (err) {
@@ -29,7 +37,7 @@ client.connect(err => {
     } else {
         console.log('connected')
     }
-})
+})*/
 const regex = /'/gi;
 let dbUtils;
 
