@@ -2,7 +2,7 @@
 
 const { Pool, Client } = require('pg');
 const _ = require('lodash');
-const connectionString = 'postgresql://localhost/alon'
+const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({
     connectionString,
 })
