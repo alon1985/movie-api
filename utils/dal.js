@@ -1,44 +1,45 @@
 'use strict';
 
-const { Pool, Client } = require('pg');
+const { Client } = require('pg');
 const _ = require('lodash');
 const fs = require('fs');
-const connectionString = process.env.DATABASE_URL;
-const pool = new Pool({
-    connectionString,
-})
 
-const config = {
-    database: 'movie-db',
-    host: process.env.DATABASE_HOST,
-    user: 'movie-db',
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT,
-    // this object will be passed to the TLSSocket constructor
-    ssl: {
-        rejectUnauthorized: false,
-        ca: fs.readFileSync(__dirname + '/ca-certificate.crt').toString(),
-    },
+console.log(`env: ${process.env.NODE_ENV}`)
+
+if(process.env.NODE_ENV === 'production') {
+    const config = {
+        database: 'movie-db',
+        host: process.env.DATABASE_HOST,
+        user: 'movie-db',
+        password: process.env.DATABASE_PASSWORD,
+        port: process.env.DATABASE_PORT,
+        // this object will be passed to the TLSSocket constructor
+        ssl: {
+            rejectUnauthorized: false,
+            ca: fs.readFileSync(__dirname + '/ca-certificate.crt').toString(),
+        },
+    }
+
+
+    const client = new Client(config)
+    console.log('trying to connect');
+    client.connect(err => {
+        if (err) {
+            console.error('error connecting', err.stack)
+        } else {
+            console.log('connected')
+        }
+    })
+} else {
+    const connectionString = 'postgresql://localhost/alon'
+
+    const client = new Client({
+        connectionString,
+    })
+    client.connect();
+
 }
 
-/*
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true
-});
-
-client.connect();*/
-
-
-const client = new Client(config)
-console.log('trying to connect');
-client.connect(err => {
-    if (err) {
-        console.error('error connecting', err.stack)
-    } else {
-        console.log('connected')
-    }
-})
 const regex = /'/gi;
 let dbUtils;
 

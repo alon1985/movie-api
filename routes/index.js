@@ -8,4 +8,5 @@ module.exports = app => {
     app.use('/', movies);
     app.use('/stats', stats);
     app.use('/service-status', serviceStatus);
+
 };
