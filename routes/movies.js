@@ -29,29 +29,37 @@ router.get('/watchlist/:id', async (req, res) => {
 })
 
 router.delete('/movies/:id', async (req, res) => {
-    const results = await processor.deleteMovie(req.params.id, false);
-    return res.status(200).json(results);
+    if(req.query.apiKey === process.env.API_KEY) {
+        const results = await processor.deleteMovie(req.params.id, false);
+        return res.status(200).json(results);
+    } else {
+        return res.status(400).json({ 'status': 'Bad request - missing or bad apiKey'});
+    }
 });
 
 router.delete('/watchlist/:id', async (req, res) => {
-    const results = await processor.deleteMovie(req.params.id, true);
-    return res.status(200).json(results);
+    if(req.query.apiKey === process.env.API_KEY) {
+        const results = await processor.deleteMovie(req.params.id, true);
+        return res.status(200).json(results);
+    } else {
+        return res.status(400).json({ 'status': 'Bad request - missing or bad apiKey'});
+    }
 })
 
 router.post('/movies/add', async (req, res) => {
-    if(requestUtils.isRequestValid(req.body)) {
+    if(requestUtils.isRequestValid(req.body) && req.query.apiKey === process.env.API_KEY) {
         const results = await processor.saveMovieSeen(req.body.id, req.body.title, req.body.year, req.body.format, req.body.poster, req.body.plot);
         return res.status(200).json(results);
     }
-    return res.status(400).json({ 'status': 'Bad request - missing body fields'});
+    return res.status(400).json({ 'status': 'Bad request - missing body fields and/or invalid apiKey'});
 });
 
 router.post('/watchlist/add', async (req, res) => {
-    if(requestUtils.isWatchlistRequestValid(req.body)) {
+    if(requestUtils.isWatchlistRequestValid(req.body) && req.query.apiKey === process.env.API_KEY) {
         const results = await processor.saveMovieToWatchlist(req.body.title, req.body.releaseDate, req.body.poster, req.body.plot);
         res.status(200).json(results);
     }
-    return res.status(400).json({ 'status': 'Bad request - missing body fields'});
+    return res.status(400).json({ 'status': 'Bad request - missing body fields and/or invalid apiKey'});
 });
 
 router.get('/export', async (req, res) => {
