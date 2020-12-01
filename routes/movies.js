@@ -59,7 +59,7 @@ router.post('/movies/add', async (req, res) => {
 
 router.post('/watchlist/add', async (req, res) => {
     if(requestUtils.isWatchlistRequestValid(req.body) && req.query.apiKey === process.env.API_KEY) {
-        const results = await processor.saveMovieToWatchlist(req.body.title, req.body.releaseDate, req.body.poster, req.body.plot);
+        const results = await processor.saveMovieToWatchlist(req.body.id, req.body.title, req.body.releaseDate, req.body.poster, req.body.plot);
         return res.status(200).json(results);
     }
     return res.status(400).json({ 'status': 'Bad request - missing body fields and/or invalid apiKey'});
