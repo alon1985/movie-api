@@ -1,47 +1,28 @@
 {
   "name": "movie-api",
-  "version": "1.0.1",
-  "description": "movie API",
+  "version": "1.2",
+  "description": "alon motro movies",
   "main": "index.js",
-  "scripts": {
-    "restart": "pm2 restart process.json",
-    "start": "pm2 --no-pmx start process.json",
-    "stop": "pm2 stop process.json",
-    "list": "pm2 list",
-    "kill": "pm2 kill",
-    "monitor": "nodemon index.js",
-    "mocha": "mocha test/index.js -t 30000",
-    "test": "npm run unit-test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/alon85/movie-api"
-  },
+  "repository": "https://github.com/alon1985/movie-api.git",
   "author": "Alon Motro",
-  "license": "none",
-  "bugs": {
-    "url": "https://github.com/alon85/movie-api/issues"
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": "14.15.0"
   },
-  "homepage": "https://github.com/alon85/movie-api",
+  "scripts": {
+    "start": "node index.js",
+    "start-dev": "NODE_ENV=dev && node index.js"
+  },
   "dependencies": {
-    "bluebird": "3.5.1",
-    "body-parser": "1.17.2",
-    "compression": "1.7.0",
-    "config": "1.26.1",
-    "couchbase": "2.4.3",
-    "express": "4.15.3",
-    "express-pino-logger": "2.0.0",
+    "express": "^4.17.1",
+    "express-promise-router": "^4.0.1",
+    "fs": "^0.0.1-security",
     "json2csv": "3.6.2",
-    "lodash": "4.17.4",
-    "pino": "4.7.1",
-    "pm2": "4.4.0",
-    "request": "2.67.0"
+    "lodash": "^4.17.20",
+    "pg": "^8.5.1"
   },
   "devDependencies": {
-    "chai": "^4.1.0",
-    "sinon": "^2.4.1",
-    "mockey": "0.0.0",
-    "mocha": "^3.4.2",
-    "mockery": "^1.7.0"
+    "eslint": "^7.13.0"
   }
 }
