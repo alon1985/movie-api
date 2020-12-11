@@ -95,9 +95,12 @@ module.exports = dbUtils = {
     },
     saveToWatchlist: async function (movieId, releaseDate) {
         let query;
+        console.log(`saving to watchlist: movie id: ${movieId}, releasedate: ${releaseDate}`);
         if (releaseDate.indexOf('Out') > -1) {
+            console.log('should update');
             query = `update watchlist set releaseDate = '${releaseDate}' where movieId = ${movieId} RETURNING id`;
         } else {
+            console.log('should insert');
             query = `insert into watchlist(movieId, releaseDate) values (${movieId}, '${releaseDate}') RETURNING id`
         }
         const results = await dbUtils.executeQuery([query], true);
