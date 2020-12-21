@@ -54,17 +54,18 @@ module.exports = dbUtils = {
         return await dbUtils.executeQuery([query]);
     },
     getMovies: async function (parameters) {
-        const titleClause = _.isEmpty(parameters.title) ? '' : `where movies.name ilike '%${parameters.title}%'`;
-        const formatClause = _.isEmpty(parameters.format) ? '' : `where format = '${parameters.format}'`;
-        let yearClause = _.isEmpty(parameters.year) ? '' : ` year = ${parameters.year}`;
+        const titleClause = _.isEmpty(parameters.title) ? '' : `where movies.name ilike '%${parameters.title}%' `;
+        const formatClause = _.isEmpty(parameters.format) ? '' : `where format = '${parameters.format}' `;
+        let yearClause = _.isEmpty(parameters.year) ? '' : `year = ${parameters.year}`;
         if(!_.isEmpty(yearClause)) {
-            yearClause = _.isEmpty(titleClause) ? yearClause : `and ${yearClause}`;
+            yearClause = _.isEmpty(titleClause) ? `where ${yearClause}` : `and ${yearClause}`;
         }
+
 
         const query = `select a.name, a.id, a.poster, a.description, a.year, format from (
                        select name, movies.id, poster, description, year, formatId
                        from movies
-                       inner join movies_seen on movies_seen.movieid = movies.id
+                       inner join movies_seen on movies_seen.movieid = movies.id 
                        ${titleClause} ${yearClause} order by movies_seen.id desc) as a
                        inner join formats on formats.id = a.formatId
                        ${formatClause}`;
