@@ -54,9 +54,14 @@ module.exports = dbUtils = {
         return await dbUtils.executeQuery([query]);
     },
     getMovies: async function (parameters) {
-        const titleClause = _.isEmpty(parameters.title) ? '' : `where movies.name ilike '%${parameters.title}%' `;
+        const limitClause = _.isEmpty(parameters.limit) ? '' : `limit ${parameters.limit}`;
+        const offsetClause = _.isEmpty(parameters.offset) ? '' : `where movies.id > ${parameters.offset}`;
+        let titleClause = _.isEmpty(parameters.title) ? '' : `movies.name ilike '%${parameters.title}%' `;
         const formatClause = _.isEmpty(parameters.format) ? '' : `where format = '${parameters.format}' `;
         let yearClause = _.isEmpty(parameters.year) ? '' : `year = ${parameters.year}`;
+        if(!_.isEmpty(titleClause)) {
+            titleClause = _.isEmpty(offsetClause) ? `where ${titleClause}` : ` and ${titleClause}`
+        }
         if(!_.isEmpty(yearClause)) {
             yearClause = _.isEmpty(titleClause) ? `where ${yearClause}` : `and ${yearClause}`;
         }
@@ -66,9 +71,9 @@ module.exports = dbUtils = {
                        select name, movies.id, poster, description, year, formatId
                        from movies
                        inner join movies_seen on movies_seen.movieid = movies.id 
-                       ${titleClause} ${yearClause} order by movies_seen.id desc) as a
+                       ${offsetClause} ${titleClause} ${yearClause} order by movies_seen.id desc) as a
                        inner join formats on formats.id = a.formatId
-                       ${formatClause}`;
+                       ${formatClause} ${limitClause}`;
 
         return await dbUtils.executeQuery([query]);
     },
