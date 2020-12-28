@@ -55,7 +55,7 @@ module.exports = dbUtils = {
     },
     getMovies: async function (parameters) {
         const limitClause = _.isEmpty(parameters.limit) ? '' : `limit ${parameters.limit}`;
-        const offsetClause = _.isEmpty(parameters.offset) ? '' : `where movies.id > ${parameters.offset}`;
+        const offsetClause = _.isEmpty(parameters.offset) ? '' : `where movies.id < ${parameters.offset}`;
         let titleClause = _.isEmpty(parameters.title) ? '' : `movies.name ilike '%${parameters.title}%' `;
         const formatClause = _.isEmpty(parameters.format) ? '' : `where format = '${parameters.format}' `;
         let yearClause = _.isEmpty(parameters.year) ? '' : `year = ${parameters.year}`;
