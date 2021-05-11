@@ -20,7 +20,7 @@
     "express-promise-router": "^4.0.1",
     "fs": "^0.0.1-security",
     "json2csv": "3.6.2",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "pg": "^8.5.1"
   },
   "devDependencies": {
